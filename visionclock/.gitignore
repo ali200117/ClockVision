@@ -1,0 +1,113 @@
+### Java / Maven ###
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+.mvn/wrapper/maven-wrapper.jar
+
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Spring Boot ###
+HELP.md
+
+### Environment / secrets ###
+.env
+.env.*
+!.env.example
+
+application-local.properties
+application-local.yml
+application-local.yaml
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### VS Code ###
+.vscode/
+
+### STS / Eclipse ###
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### Gradle ###
+.gradle/
+build/
+
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Operating system ###
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+### Temporary files ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+### Python / ML ###
+__pycache__/
+*.py[cod]
+*$py.class
+
+.venv/
+venv/
+env/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.ipynb_checkpoints/
+
+### Machine learning artifacts ###
+*.pt
+*.pth
+*.onnx
+*.h5
+*.keras
+
+### Dataset / generated data ###
+data/
+datasets/
+models/
+checkpoints/
+
+### Frontend / Node ###
+node_modules/
+dist/
+coverage/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Frontend environment files ###
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
