@@ -10,19 +10,14 @@ Denne filen er arbeidsplanen. `README.md` forklarer hva prosjektet er, denne for
 
 ## Hvor er jeg nå
 
-Status per 2026-10-14:
+Status per 2026-10-18:
 
-- Spring Boot 4.1.1, Java 21, Maven er satt opp. Dependencies: data-jpa, validation, webmvc, devtools, postgresql, og test-startere.
-- `application.properties` setter profil `local`. Det finnes en `application-local.properties.example`, men den er tom.
-- Alle klasser under `employee/` og `attendance/` er tomme skall. Ingenting har logikk ennå.
-- Feil som må rettes i skallene, og som er med i steg 1 og 2:
-  - `EmployeeRepository` er en `class`, men skal være et **interface**.
-  - `AttendanceType` er en tom fil, men skal være en **enum**.
-  - DTO-ene er `class`, men passer best som **records**.
-  - `common/` (exception og config) finnes ikke ennå.
-- Ingen database er koblet til, ingen tester er skrevet utover den genererte `VisionclockApplicationTests`.
+- Postgres kjører i Docker (container `visionclock-db`), tabellene `employee` og `attendance` er laget med SQL i pgAdmin.
+- REST-backend er ferdig og testet (16 tester grønne): ansatte (opprett, hent, oppdater, deaktiver), stempling (CLOCK_IN/CLOCK_OUT bestemmes av backend), status og historikk, feilsvar som ProblemDetail.
+- `Employee` og `EmployeeRepository` er skrevet av meg. Resten av REST-delen er skrevet av Claude, fordi fokus nå er ML. Les gjerne gjennom `AttendanceService` for å forstå stemplingslogikken.
+- Gjenstår fra fase A: Flyway (steg 8) og Swagger (steg 9). Ingen av dem blokkerer ML.
 
-**Neste steg: Steg 0, så Steg 1.**
+**Neste steg: fullføre og kvalitetssjekke REST-delen (fase A), så Fase B.**
 
 ---
 
@@ -647,14 +642,14 @@ Ansiktsdata er biometriske data, og er en særlig kategori av personopplysninger
 
 # Hurtigsjekkliste
 
-- [ ] Steg 0: Miljø og database
-- [ ] Steg 1: Employee og repository
-- [ ] Steg 2: Attendance-modellen
-- [ ] Steg 3: DTO-er og validering
-- [ ] Steg 4: EmployeeService og EmployeeController
-- [ ] Steg 5: Stemplingslogikken
-- [ ] Steg 6: Feilhåndtering
-- [ ] Steg 7: Integrasjonstester
+- [x] Steg 0: Miljø og database
+- [x] Steg 1: Employee og repository
+- [x] Steg 2: Attendance-modellen
+- [x] Steg 3: DTO-er og validering
+- [x] Steg 4: EmployeeService og EmployeeController
+- [x] Steg 5: Stemplingslogikken
+- [x] Steg 6: Feilhåndtering
+- [x] Steg 7: Integrasjonstester
 - [ ] Steg 8: Flyway og opprydding
 - [ ] Steg 9: Swagger og klargjøring
 - [ ] Steg 10: Python og bildebehandling
