@@ -57,6 +57,29 @@ def test_nose_closer_to_eyes_means_looking_up():
     assert head_pose(landmarks(nose_y=140)).pitch < head_pose(landmarks(nose_y=165)).pitch
 
 
+def rotate(row: np.ndarray, degrees: float, center=(130.0, 140.0)) -> np.ndarray:
+    """Roterer alle landemerkene, som et bilde som vippes sidelengs."""
+    angle = np.radians(degrees)
+    matrix = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+    rotated = row.copy()
+    for i in range(4, 14, 2):
+        rotated[i:i + 2] = matrix @ (row[i:i + 2] - center) + center
+    return rotated
+
+
+def test_tilting_a_photo_sideways_does_not_look_like_a_head_turn():
+    frontal = head_pose(landmarks())
+    for degrees in (-30, -15, 15, 30):
+        tilted = head_pose(rotate(landmarks(), degrees))
+        assert abs(tilted.yaw - frontal.yaw) < 0.02
+        assert abs(tilted.pitch - frontal.pitch) < 0.02
+
+
+def test_real_head_turn_still_detected_when_head_is_tilted():
+    turned = head_pose(rotate(landmarks(nose_x_offset=20), 15))
+    assert turned.yaw > 0.3
+
+
 def test_degenerate_landmarks_give_none():
     row = landmarks()
     row[6:8] = row[4:6]

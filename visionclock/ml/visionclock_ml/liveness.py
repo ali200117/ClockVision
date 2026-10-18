@@ -44,19 +44,29 @@ class HeadPose:
 
 
 def head_pose(raw: np.ndarray, mirror: bool = False) -> HeadPose | None:
-    """Hodestilling fra raden fra YuNet: boks, 5 landemerker (øyne, nese, munnvik), score."""
-    right_eye, left_eye = raw[4:6], raw[6:8]
-    nose = raw[8:10]
-    mouth = (raw[10:12] + raw[12:14]) / 2
+    """Hodestilling fra raden fra YuNet: boks, 5 landemerker (øyne, nese, munnvik), score.
+
+    Måles langs øyelinjen, så et bilde som vippes sidelengs ikke ser ut som et hode som snur seg.
+    """
+    right_eye, left_eye = raw[4:6].astype(float), raw[6:8].astype(float)
+    nose = raw[8:10].astype(float)
+    mouth = (raw[10:12].astype(float) + raw[12:14].astype(float)) / 2
 
     eye_mid = (right_eye + left_eye) / 2
     eye_distance = math.dist(right_eye, left_eye)
-    face_height = float(mouth[1] - eye_mid[1])
-    if eye_distance <= 0 or face_height <= 0:
+    if eye_distance <= 0:
         return None
 
-    yaw = float(nose[0] - eye_mid[0]) / eye_distance
-    pitch = float(nose[1] - eye_mid[1]) / face_height
+    across = (left_eye - right_eye) / eye_distance   # langs øyelinjen
+    down = np.array([-across[1], across[0]])          # vinkelrett, nedover i ansiktet
+
+    nose_offset = nose - eye_mid
+    face_height = float(np.dot(mouth - eye_mid, down))
+    if face_height <= 0:
+        return None
+
+    yaw = float(np.dot(nose_offset, across)) / eye_distance
+    pitch = float(np.dot(nose_offset, down)) / face_height
     return HeadPose(-yaw if mirror else yaw, pitch)
 
 
