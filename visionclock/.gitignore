@@ -111,3 +111,9 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+### ML (VisionClock) ###
+ml/.venv/
+ml/models/
+ml/data/
+__pycache__/
+*.pyc
