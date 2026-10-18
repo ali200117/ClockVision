@@ -1,0 +1,6 @@
+spring.datasource.url=jdbc:postgresql://localhost:5432/visionclock
+spring.datasource.username=visionclock_user
+spring.datasource.password=change-me
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
