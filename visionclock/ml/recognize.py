@@ -11,7 +11,7 @@ import cv2
 from visionclock_ml import api_client, camera, config, liveness, store
 from visionclock_ml.face_engine import FaceEngine
 from visionclock_ml.liveness import LivenessChallenge, Status
-from visionclock_ml.overlay import GREEN, RED, YELLOW, draw_face, draw_status
+from visionclock_ml.overlay import BLACK, GREEN, RED, draw_face, draw_status
 
 WINDOW = "VisionClock - gjenkjenning"
 RETRY_AFTER_FAILURE_SECONDS = 5
@@ -29,6 +29,8 @@ def main() -> int:
                         help="laveste likhet under utfordringen, mens hodet er snudd")
     parser.add_argument("--steps", type=int, default=config.LIVENESS_STEPS,
                         help="antall hodebevegelser i utfordringen")
+    parser.add_argument("--step-timeout", type=float, default=config.LIVENESS_STEP_TIMEOUT,
+                        help="sekunder per hodebevegelse")
     parser.add_argument("--no-liveness", action="store_true", help="hopp over utfordringen")
     parser.add_argument("--debug-pose", action="store_true", help="vis hodestilling på skjermen")
     parser.add_argument("--dry-run", action="store_true", help="ikke kall backend, bare vis treff")
@@ -129,10 +131,10 @@ def main() -> int:
                         show("Identitet ikke bekreftet etter utfordringen", now)
                     challenge = None
                 else:
-                    draw_status(display, f"{challenge.prompt()}  ({challenge.seconds_left(now):.0f}s)", YELLOW)
+                    draw_status(display, f"{challenge.prompt()}  ({challenge.seconds_left(now):.0f}s)", BLACK)
                     if args.debug_pose and challenge.last_delta:
                         d_yaw, d_pitch = challenge.last_delta
-                        draw_status(display, f"yaw {d_yaw:+.2f}  pitch {d_pitch:+.2f}", YELLOW, line=1)
+                        draw_status(display, f"yaw {d_yaw:+.2f}  pitch {d_pitch:+.2f}", BLACK, line=1)
                     cv2.imshow(WINDOW, display)
                     if cv2.waitKey(1) & 0xFF == ord("q"):
                         break
@@ -151,7 +153,7 @@ def main() -> int:
                 else:
                     challenge = LivenessChallenge.random(
                         args.steps,
-                        step_timeout=config.LIVENESS_STEP_TIMEOUT,
+                        step_timeout=args.step_timeout,
                         yaw_delta=config.LIVENESS_YAW_DELTA,
                         pitch_delta=config.LIVENESS_PITCH_DELTA,
                     )
@@ -161,9 +163,9 @@ def main() -> int:
                           + ", ".join(step.value for step in challenge.steps))
 
             if now < message_until:
-                draw_status(display, message, YELLOW)
+                draw_status(display, message, BLACK)
             else:
-                draw_status(display, "q = avslutt", YELLOW)
+                draw_status(display, "q = avslutt", BLACK)
 
             cv2.imshow(WINDOW, display)
             if cv2.waitKey(1) & 0xFF == ord("q"):

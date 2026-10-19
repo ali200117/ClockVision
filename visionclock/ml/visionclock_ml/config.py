@@ -21,7 +21,7 @@ MATCH_THRESHOLD = 0.363
 
 # Liveness: tilfeldig hodebevegelse etter at ansiktet er gjenkjent.
 LIVENESS_STEPS = 2
-LIVENESS_STEP_TIMEOUT = 6.0
+LIVENESS_STEP_TIMEOUT = 12.0
 # Lavere enn MATCH_THRESHOLD fordi likheten faller når hodet er snudd.
 LIVENESS_IDENTITY_FLOOR = 0.30
 LIVENESS_YAW_DELTA = 0.20
